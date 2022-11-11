@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List of User{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+    <div class="container mt-4">
+        <a class="btn btn-success" href="{{ '/user/nouveau' }}">Ajouter un utilisateur</a>
+        {% if not users.items is same as([]) %}
+
+        
+            <h1 class="text-center text-underline mt-4">Liste des utilisateurs</h1>
+            
+            {# afficher un message de confirmation #}
+            {% for message in app.flashes('success') %}
+            <div class="alert alert-success border-success border-2">
+                {{ message }}
+            </div>
+            {% endfor %}
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Numéro</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Adresse</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                
+                {% for user in users %}
+                    <tr class="table-secondary">
+                        <th scope="row">{{ user.id }}</th>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.adress }}</td>
+                        <td>{{ user.email }}</td>
+                        <td><a href="{{ path('user.edit', {'id': user.id}) }}" class="btn btn-info">Modifier</a></td>
+                        <td><a href="{{ path('user.delete', {'id': user.id}) }}" class="btn btn-secondary">Supprimer</a></td>
+                    </tr>
+                {% endfor %}
+                
+                </tbody>
+            </table>
+            <div class="navigation d-flex justify-content-center">
+                {{ knp_pagination_render(users) }}
+            </div>
+        {% else %}
+            <h4>Aucun utilisateur à afficher</h4>
+        {% endif %}
+        
+    </div>
+
+{% endblock %}
